@@ -8,6 +8,7 @@
         :root {
             --class1: #e8f4ff; --class2: #f0f8ff;
             --class3: #f5f3ff; --class4: #fff0f5;
+            --class5: #e6ffe6; --class6: #fff3cd;
             --active-week: #007AFF;
             --primary-color: #2196F3;
             --danger-color: #c62828;
@@ -26,9 +27,14 @@
                 padding: 10px;
             }
             
+            .week-nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
             .week-nav button {
-                padding: 6px 10px;
-                font-size: 14px;
+                width: 100%;
+                margin-bottom: 6px;
             }
             
             .week-card {
@@ -42,8 +48,13 @@
             }
             
             .time-col {
-                width: 70px;
+                width: 100%;
                 font-size: 13px;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
             }
         }
         
@@ -237,15 +248,15 @@ const courses = [
     },
     { // 星期四
         name: '线性代数', weeks: '1-16', time: '5-6', day: 4,
-        classroom: '松1-608', class: '新能源3班', color: 'var(--class1)'
+        classroom: '松1-608', class: '新能源3班', color: 'var(--class4)'
     },
     { // 星期四
         name: '线性代数', weeks: '1-13,16-18', time: '7-8', day: 4,
-        classroom: '松3-602', class: '大数据2班', color: 'var(--class2)'
+        classroom: '松3-602', class: '大数据2班', color: 'var(--class5)'
     },
     { // 星期五
         name: '线性代数', weeks: '1-12,15-18', time: '1-2', day: 5,
-        classroom: '松1-608', class: '电信3班', color: 'var(--class3)'
+        classroom: '松1-608', class: '电信3班', color: 'var(--class6)'
     }
 ];
 
@@ -443,12 +454,6 @@ function highlightCurrent() {
             if (cell) cell.classList.add('current-course');
         }
     }
-}
-
-// 修复课程颜色变量错误
-window.onload = function() {
-    // 修复大数据2班课程颜色变量错误
-    courses[4].color = 'var(--class4)';
 }
 
 // 启动程序
