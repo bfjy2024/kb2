@@ -8,7 +8,10 @@
         :root {
             --class1: #e8f4ff; --class2: #f0f8ff;
             --class3: #f5f3ff; --class4: #fff0f5;
+            --class5: #e6ffe6; --class6: #fff3cd;
             --active-week: #007AFF;
+            --primary-color: #2196F3;
+            --danger-color: #c62828;
         }
         
         body {
@@ -53,17 +56,12 @@
                 font-size: 13px;
             }
         
-            .holiday-mark {
-                right: 2px;
-                bottom: 2px;
-            }
-        
-            .holiday-text {
-                font-size: 12px;
-                padding: 1px 4px;
+            table {
+                display: block;
+                overflow-x: auto;
             }
         }
-    
+        
         /* 节假日标记样式 */
         .holiday-mark {
             position: absolute;
@@ -76,7 +74,7 @@
         
         .holiday-text {
             background: rgba(255, 235, 59, 0.9);
-            color: #c62828;
+            color: var(--danger-color);
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 13px;
@@ -87,7 +85,7 @@
         .holiday-line {
             width: 12px;
             height: 2px;
-            background: #c62828;
+            background: var(--danger-color);
             margin-left: 4px;
             opacity: 0.6;
         }
@@ -104,8 +102,9 @@
         }
 
         .course-name {
-            font-weight: 600 !important;  /* 新增加粗样式 */
+            font-weight: 600;
             margin-bottom: 6px;
+            color: var(--primary-color);
         }
         
         .week-nav {
@@ -159,11 +158,63 @@
         .current-course {
             background: #fff8e1 !important;
             box-shadow: inset 0 0 0 2px #ffd54f;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: inset 0 0 0 2px #ffd54f; }
+            50% { box-shadow: inset 0 0 0 4px #ffd54f; }
         }
 
         .time-col {
             width: 100px;
             font-weight: 500;
+            color: #666;
+        }
+        
+        .course-detail {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .date-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .holiday-icon {
+            font-size: 14px;
+            color: var(--danger-color);
+        }
+        
+        /* 新增样式优化 */
+        .week-nav::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .week-nav::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+        
+        .course-content:hover {
+            transform: scale(1.02);
+            transition: transform 0.2s;
+        }
+        
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .week-header .date-range {
+            font-size: 14px;
             color: #666;
         }
     </style>
@@ -174,47 +225,41 @@
 
 <script>
 // 基础数据
-const startDate = new Date(2025, 1, 24); // 2025-02-24
+const startDate = new Date(2025, 8, 8); // 2025-09-08
 const holidays = [
-    { date: '2025-01-29', name: '春节' }, // 假设春节假期
-    { date: '2025-04-04', name: '清明' },
-    { date: '2025-05-01', name: '劳动节' },
-    { date: '2025-06-18', name: '端午' },
-    { date: '2025-09-17', name: '中秋' },
-    { date: '2025-10-01', name: '国庆' }
+    { date: '2025-09-27', name: '中秋' },
+    { date: '2025-10-01', name: '国庆' },
+    { date: '2025-10-02', name: '国庆' },
+    { date: '2025-10-03', name: '国庆' },
+    { date: '2025-10-04', name: '国庆' },
+    { date: '2025-10-05', name: '国庆' },
+    { date: '2025-10-06', name: '国庆' },
+    { date: '2025-10-07', name: '国庆' }
 ];
 const courses = [
-    { // 星期一
-        name: '高数', weeks: '2-16双', time: '1-2', day: 1,
-        classroom: '1-401', class: '网安3', color: 'var(--class1)'
+    { // 星期二
+        name: '线性代数', weeks: '1-16', time: '1-2', day: 2,
+        classroom: '松1-608', class: '新能源1班', color: 'var(--class1)'
     },
-    { // 星期一
-        name: '数模', weeks: '1-16', time: '7-8', day: 1,
-        classroom: 'L6-909', class: '软件3', color: 'var(--class3)'
-    },
-    { // 星期一晚上
-        name: '高数', weeks: '1-16', time: '9-10', day: 1,
-        classroom: '5-604', class: '网络2', color: 'var(--class2)'
-    },
-    { // 星期三
-        name: '高数', weeks: '1-16', time: '1-2', day: 3,
-        classroom: '2-302', class: '网安3', color: 'var(--class1)'
-    },
-    { // 星期五
-        name: '数模', weeks: '1-16', time: '1-2', day: 5,
-        classroom: 'L6-902', class: '软件3', color: 'var(--class3)'
-    },
-    { // 星期五下午
-        name: '高数', weeks: '1-15单', time: '5-6', day: 5,
-        classroom: '3-309', class: '网络2', color: 'var(--class2)'
+    { // 星期二
+        name: '线性代数', weeks: '1-16', time: '3-4', day: 2,
+        classroom: '松1-501', class: '新能源2班', color: 'var(--class2)'
     },
     { // 星期四
-        name: '高数', weeks: '1-17无9', time: '7-8', day: 4,
-        classroom: '5-304', class: '电气5', color: 'var(--class4)'
+        name: '线性代数', weeks: '1-12,15-18', time: '3-4', day: 4,
+        classroom: '松1-506', class: '电信4班', color: 'var(--class3)'
     },
-    { // 星期二晚上
-        name: '高数', weeks: '1-17无9', time: '9-10', day: 2,
-        classroom: '5-508', class: '电气5', color: 'var(--class4)'
+    { // 星期四
+        name: '线性代数', weeks: '1-16', time: '5-6', day: 4,
+        classroom: '松1-608', class: '新能源3班', color: 'var(--class4)'
+    },
+    { // 星期四
+        name: '线性代数', weeks: '1-13,16-18', time: '7-8', day: 4,
+        classroom: '松3-602', class: '大数据2班', color: 'var(--class5)'
+    },
+    { // 星期五
+        name: '线性代数', weeks: '1-12,15-18', time: '1-2', day: 5,
+        classroom: '松1-608', class: '电信3班', color: 'var(--class6)'
     }
 ];
 
@@ -222,13 +267,16 @@ const courses = [
 function init() {
     // 生成所有周课表
     const container = document.getElementById('timetables');
-    for (let week = 1; week <= 17; week++) {
+    for (let week = 1; week <= 20; week++) {
         const card = document.createElement('div');
         card.className = 'week-card';
         card.id = `week${week}`;
         card.style.display = 'none'; // 默认隐藏
         card.innerHTML = `
-            <h3>第 ${week} 周（${getDateRange(week)}）</h3>
+            <div class="week-header">
+                <h3>第 ${week} 周</h3>
+                <div class="date-range">(${getDateRange(week)})</div>
+            </div>
             ${renderTable(week)}
         `;
         container.appendChild(card);
@@ -236,7 +284,7 @@ function init() {
 
     // 生成周导航
     const nav = document.getElementById('weekNav');
-    for (let week = 1; week <= 17; week++) {
+    for (let week = 1; week <= 20; week++) {
         const btn = document.createElement('button');
         btn.textContent = `第${week}周`;
         btn.onclick = () => showWeek(week);
@@ -266,20 +314,20 @@ function showWeek(week) {
 function renderTable(week) {
     const timeSlots = [
         { time: '1-2', period: '上午' },
+        { time: '3-4', period: '上午' },
         { time: '5-6', period: '下午' },
-        { time: '7-8', period: '下午' },
-        { time: '9-10', period: '晚上' }
+        { time: '7-8', period: '下午' }
     ];
 
     let html = `<table>
         <tr>
             <th class="time-col">时间</th>
-            ${[1,2,3,4,5].map(d => {
+            ${[1,2,3,4,5,6,7].map(d => {
                 const dateStr = getDateStr(week, d);
                 const holiday = checkHoliday(dateStr);
                 return `
                     <th class="${holiday ? 'holiday-header' : ''}">
-                        星期${['一','二','三','四','五'][d-1]}
+                        星期${['一','二','三','四','五','六','日'][d-1]}
                         <div class="date-info">
                             ${dateStr}
                             ${holiday ? `<span class="holiday-icon">🎉</span>` : ''}
@@ -292,7 +340,7 @@ function renderTable(week) {
     timeSlots.forEach(slot => {
         html += `<tr>
             <td class="time-col">${slot.time}节<br>${slot.period}</td>
-            ${[1,2,3,4,5].map(day => {
+            ${[1,2,3,4,5,6,7].map(day => {
                 const dateStr = getDateStr(week, day);
                 const holiday = checkHoliday(dateStr);
                 const course = courses.find(c => 
@@ -327,6 +375,7 @@ function renderTable(week) {
 
     return html + '</table>';
 }
+
 // 辅助函数
 function checkHoliday(dateStr) {
     const [month, day] = dateStr.split('/');
@@ -334,11 +383,18 @@ function checkHoliday(dateStr) {
     const holiday = holidays.find(h => h.date === fullDate);
     return holiday?.name || null;
 }
+
 function checkWeek(current, condition) {
     if (condition.includes('无')) {
         const [range, exclude] = condition.split('无');
-        const [start, end] = range.split('-').map(Number);
-        return current >= start && current <= end && current != exclude;
+        const excludeRanges = exclude.split('-').map(Number);
+        if (excludeRanges.length === 1) {
+            return current >= range.split('-')[0] && current <= range.split('-')[1] && current != excludeRanges[0];
+        } else if (excludeRanges.length === 2) {
+            const [start, end] = excludeRanges;
+            return current >= range.split('-')[0] && current <= range.split('-')[1] && 
+                   (current < start || current > end);
+        }
     }
     if (condition.includes('双')) {
         const [start, end] = condition.replace('双','').split('-').map(Number);
@@ -348,14 +404,14 @@ function checkWeek(current, condition) {
         const [start, end] = condition.replace('单','').split('-').map(Number);
         return current >= start && current <= end && current % 2 !== 0;
     }
-    const [start, end] = condition.split('-').map(Number);
-    return current >= start && current <= end;
+    const ranges = condition.split(',').map(r => r.split('-').map(Number));
+    return ranges.some(([s, e]) => current >= s && current <= e);
 }
 
 function getCurrentWeek() {
     const now = new Date();
     const diff = Math.floor((now - startDate) / (1000*60*60*24*7));
-    return Math.max(1, Math.min(17, diff + 1));
+    return Math.max(1, Math.min(20, diff + 1));
 }
 
 function getDateStr(week, day) {
@@ -389,9 +445,9 @@ function highlightCurrent() {
     const hours = now.getHours();
     let timeSlot = '';
     if (hours >= 8 && hours < 10) timeSlot = '1-2';
+    else if (hours >= 10 && hours < 12) timeSlot = '3-4';
     else if (hours >= 14 && hours < 16) timeSlot = '5-6';
     else if (hours >= 16 && hours < 18) timeSlot = '7-8';
-    else if (hours >= 19 && hours < 21) timeSlot = '9-10';
 
     if (timeSlot) {
         const table = document.querySelector(`#week${currentWeek} table`);
